@@ -6,7 +6,9 @@
     "start": "node bin/www",
     "dev": "./node_modules/.bin/nodemon bin/www",
     "prd": "pm2 start bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .js",
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "debug": "^4.1.1",
@@ -38,9 +40,9 @@
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "eslint",
+    "*.{js,jsx,ts,tsx,json,md}": [
+      "yarn prettier",
+      "yarn lint",
       "git add"
     ]
   }
