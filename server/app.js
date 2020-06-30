@@ -1,6 +1,5 @@
 const Koa = require('koa');
 const http = require('http');
-const socketIO = require('socket.io');
 const views = require('koa-views');
 const json = require('koa-json');
 const onerror = require('koa-onerror');
@@ -12,21 +11,13 @@ const users = require('./routes/users');
 
 const config = require('./config/default');
 
-const app = new Koa();
-const server = http.createServer(app.callback());
-const io = socketIO(server);
+const server = require('./server');
 
-io.on('connection', (socket) => {
-  console.info('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-    io.emit('chat message', msg);
-  });
-});
-server.listen(config.port, () => {
+const app = new Koa();
+const httpServer = http.createServer(app.callback());
+server.init(httpServer);
+
+httpServer.listen(config.port, () => {
   console.log(`listening on *:${config.port}`);
 });
 

@@ -1,16 +1,16 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
     <h1><%= title %></h1>
     <p>EJS Welcome to <%= title %></p>
   </body>
-</html> -->
+</html>
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -62,12 +62,15 @@
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
       $(function () {
-        var socket = io('http://localhost:3001');
+        var socket = io('http://localhost:3001/users/2', { forceNew: false });
         $('form').submit(function (e) {
           e.preventDefault(); // prevents page reloading
           socket.emit('chat message', $('#m').val());
           $('#m').val('');
           return false;
+        });
+        socket.on('message', (data) => {
+          console.warn(data);
         });
         socket.on('chat message', function (msg) {
           $('#messages').append($('<li>').text(msg));
@@ -78,4 +81,4 @@
     <ul id="messages"></ul>
     <form action=""><input id="m" autocomplete="off" /><button>Send</button></form>
   </body>
-</html>
+</html> -->
