@@ -51,13 +51,13 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   msgContentWrap: {
+    flex: 1,
     backgroundColor: 'white',
     borderRadius: 6,
     paddingVertical: 10,
     paddingHorizontal: 12,
   },
-  msgConten: {
-    flex: 1,
+  msgContent: {
     fontSize: 15,
     textAlign: 'left',
     color: 'black',
@@ -135,7 +135,7 @@ const Chat = () => {
               return (
                 <View style={[styles.msgBox, { justifyContent: 'flex-end' }]}>
                   <View style={styles.msgContentWrap}>
-                    <Text style={styles.msgConten}>{conten}</Text>
+                    <Text style={styles.msgContent}>{conten}</Text>
                   </View>
                 </View>
               );
@@ -147,7 +147,7 @@ const Chat = () => {
                     {userName}
                   </Text>
                   <View style={styles.msgContentWrap}>
-                    <Text style={styles.msgConten}>{conten}</Text>
+                    <Text style={styles.msgContent}>{conten}</Text>
                   </View>
                 </View>
               );
