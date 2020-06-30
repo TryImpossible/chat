@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   msgBox: {
+    marginVertical: 8,
     marginHorizontal: 12,
     flexDirection: 'row',
   },
@@ -79,13 +80,20 @@ const Chat = () => {
       })
       .catch(() => {});
     client
+      .onLeave()
+      .then(msg => {
+        const item = { type: MSG_TYPE.NOTICE, data: msg };
+        setMessages([].concat(messages).concat([item]));
+      })
+      .catch(() => {});
+    client
       .onMessage()
       .then(msg => {
         const item = { type: MSG_TYPE.RECEIVER, data: msg };
         setMessages([].concat(messages).concat([item]));
       })
       .catch(() => {});
-  });
+  }, [messages]);
 
   const onSendPress = React.useCallback(() => {
     if (!content) {
@@ -114,33 +122,32 @@ const Chat = () => {
           style={{ flex: 1 }}
           data={messages}
           keyExtractor={(item, index) => String(index)}
-          renderItem={({ item: { type, data } }) => {
+          renderItem={({
+            item: {
+              type,
+              data: { userName, content: conten },
+            },
+          }) => {
             if (type === MSG_TYPE.NOTICE) {
-              const { userName } = data;
-              return <Text style={styles.notice}>{`${userName}加入群聊`}</Text>;
+              return <Text style={styles.notice}>{conten}</Text>;
             }
             if (type === MSG_TYPE.SENDER) {
-              const { userName } = data;
               return (
                 <View style={[styles.msgBox, { justifyContent: 'flex-end' }]}>
                   <View style={styles.msgContentWrap}>
-                    <Text style={styles.msgConten}>{data.content}</Text>
+                    <Text style={styles.msgConten}>{conten}</Text>
                   </View>
-                  <Text style={[styles.msgUserName, { marginLeft: 8 }]}>
-                    {userName}
-                  </Text>
                 </View>
               );
             }
             if (type === MSG_TYPE.RECEIVER) {
-              const { userName } = data;
               return (
                 <View style={styles.msgBox}>
                   <Text style={[styles.msgUserName, { marginRight: 8 }]}>
                     {userName}
                   </Text>
                   <View style={styles.msgContentWrap}>
-                    <Text style={styles.msgConten}>{data.content}</Text>
+                    <Text style={styles.msgConten}>{conten}</Text>
                   </View>
                 </View>
               );

@@ -28,24 +28,43 @@ const client = {
       userName: this.userName,
     });
   },
-  logout: function() {},
+  logout: function() {
+    if (!this._socket || !this._socket.connected) {
+      return;
+    }
+    this._socket.disconnect();
+  },
   onJoin: function() {
     return new Promise((resolve, reject) => {
       if (!this._socket || !this._socket.connected) {
         reject();
       }
       this._socket.on('join', msg => {
+        Object.assign(msg, { content: `${msg.userName}加入了群聊` });
         resolve(msg);
       });
     });
   },
-  onLeave: function() {},
+  onLeave: function() {
+    return new Promise((resolve, reject) => {
+      if (!this._socket || !this._socket.connected) {
+        reject();
+      }
+      this._socket.on('leave', msg => {
+        Object.assign(msg, { content: `${msg.userName}退出了群聊` });
+        resolve(msg);
+      });
+    });
+  },
   onMessage: function() {
     return new Promise((resolve, reject) => {
       if (!this._socket || !this._socket.connected) {
         reject();
       }
       this._socket.on('message', msg => {
+        if (this.userId === msg.userId) {
+          return;
+        }
         resolve(msg);
       });
     });
