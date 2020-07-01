@@ -1,14 +1,14 @@
 import React from "react";
-import "./Chat.css";
+import "./Chat.scss";
 import client from "../../client";
 
 const MSG_TYPE = { NOTICE: "notice", SENDER: "sender", RECEIVER: "receiver" };
 
 const Chat = () => {
   let inputRef = null;
-  let content = "";
 
   const [messages, setMessages] = React.useState([]);
+  const [content, setContent] = React.useState("");
 
   React.useEffect(() => {
     client
@@ -50,10 +50,10 @@ const Chat = () => {
       data,
     };
     setMessages([].concat(messages).concat([msg]));
-    inputRef && inputRef.value("");
-  }, [content, inputRef, messages]);
+    setContent("");
+  }, [content, messages]);
   return (
-    <div className="container">
+    <div className="container_chat">
       <ul className="content">
         {messages.map(
           ({ type, data: { userName, content: conten } }, index) => {
@@ -63,11 +63,11 @@ const Chat = () => {
       </ul>
       <div className="footer">
         <input
-          ref={(ref) => (inputRef = ref)}
           placeholder="请输入..."
-          onChange={(e) => (content = e.target.value)}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         />
-        <button type="button" onChange={onSendPress}>
+        <button type="button" onClick={onSendPress}>
           Send
         </button>
       </div>

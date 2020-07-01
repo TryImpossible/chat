@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import "./Login.css";
+import "./Login.scss";
 import client from "../../client";
 
 let userName;

@@ -5,6 +5,7 @@ const client = {
   userId: Date.now(),
   userName: "",
   init: function () {
+    console.info("12313123213213321");
     this._socket = io("http://192.168.1.101:3001", {
       transports: ["websocket"], // you need to explicitly tell it to use websockets
       forceNew: false,
